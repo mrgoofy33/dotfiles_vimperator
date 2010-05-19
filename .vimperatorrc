@@ -1,0 +1,93 @@
+"## proxy.js Setting
+javascript <<EOM
+liberator.globalVariables.proxy_settings = [
+   { conf_name: 'disable',
+     conf_usage: 'direct connection',
+     settings: [ { label:'type', param:0 } ]
+   },
+   { conf_name: 'proxy_name',
+     conf_usage: 'use proxy_name proxy',
+     settings: [ { label:'type', param:1 },
+         { label:'http', param:'set http proxy_url' },{ label:'http_port', param:8088 },
+         { label:'ssl', param:'set ssl proxy_url' },{ label:'ssl_port', param:8088 }
+     ]
+   }
+];
+EOM
+
+"## bit.ly Setting
+javascript <<EOF
+liberator.globalVariables.copy_templates = [
+    { label: 'bitURL', value: '%bitURL%', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText;} },
+    { label: 'ASIN', value: 'copy ASIN code from Amazon', custom: function()content.document.getElementById('ASIN').value},
+    { label: 'titleAndURL',    value: '"%TITLE%" %URL%' },
+    { label: 'title',          value: '%TITLE%' },
+    { label: 'tDiary',         value: '{{a \'%TITLE%|%URL%\'}}' }
+];
+EOF
+
+"## hatenabookmark addon plugin
+javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://hatenabookmark/content/vimperator/plugin/hatenabookmark.js', {__proto__: this});
+
+"## Setting
+set titlestring=Firefox
+set verbose=9
+set complete=sl
+set wildoptions=auto
+set hlsearch
+set showtabline=1
+set history=1000
+set activate=homepage,quickmark,tabopen,paste
+set focuscontent
+set guioptions=Trb
+"set guioptions=
+
+"## Key Mapping
+map j 3<C-e>
+map k 3<C-y>
+map a gT
+map s gt
+map <BS> <A-Left>
+map <C-l> <A-d>
+map <C-c> :echo Yank!<CR>Y
+map <Left>  gT
+map <Right> gt
+map <S-Left>  :tabmove! -1<CR>
+map <S-Right> :tabmove! +1<CR>
+nmap ,cb :copy<Space>bitURL<CR>
+nmap ,ca :copy<Space>ASIN<CR>
+nmap ,ct :copy<Space>titleAndURL<CR>
+nmap llo :stylish turnall on<CR>
+nmap llf :stylish turnall off<CR>
+vmap <silent> <C-g> y<Esc><Esc>P
+noremap <C-1> :set guioptions=bmT<cr>
+noremap <C-2> :set guioptions=<cr>
+
+"## OS ShortCut Setting
+inoremap <C-a> <C-v><C-a>
+inoremap <C-z> <C-v><C-z>
+inoremap <C-x> <C-v><C-x>
+inoremap <C-c> <C-v><C-c>
+inoremap <C-v> <C-v><C-v>
+cnoremap <C-a> <C-v><C-a>
+cnoremap <C-z> <C-v><C-z>
+cnoremap <C-x> <C-v><C-x>
+cnoremap <C-c> <C-v><C-c>
+cnoremap <C-v> <C-v><C-v>
+
+"## Quick Mark
+qmark g http://www.google.co.jp/
+qmark m https://mail.google.com/
+qmark n http://news.google.co.jp/nwshp?hl=ja&tab=wn
+qmark t http://twitter.com/
+qmark a http://www.amazon.co.jp/
+qmark r http://www.rakuten.co.jp/
+qmark b http://b.hatena.ne.jp/
+
+"## [Not Setting] direct bookmars js
+"let g:direct_sbm_use_services_by_tag = "h"
+"let g:direct_sbm_use_services_by_post = "g"
+
+"## vimperatorrc sourced output
+echo _vimperatorrc sourced
+
